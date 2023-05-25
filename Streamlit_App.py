@@ -21,24 +21,6 @@ import streamlit as st
 #    mfccs_scaled = np.mean(mfccs.T, axis=0)
 #    return mfccs_scaled
 
-# Set page configuration
-st.set_page_config(
-    page_title="Emotional Speech Recognition",
-    page_icon=":microphone:",
-    layout="wide",
-    initial_sidebar_state="auto",
-)
-
-# Define CSS to change the background image
-background_css = """
-    body {
-        background-image: url('./bg.jpg');
-        background-size: cover;
-    }
-"""
-
-# Inject the CSS for background image
-st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
 
 # def main for creating streamlit app
 def main():
@@ -73,6 +55,25 @@ def main():
             predicted_probabilities = model.predict(features)[0]
             predicted_emotion = emotion_labels[np.argmax(predicted_probabilities)]
             st.success(f'Predicted Emotion: {predicted_emotion}')
+            
+# Set page configuration
+st.set_page_config(
+    page_title="Emotional Speech Recognition",
+    page_icon=":microphone:",
+    layout="wide",
+    initial_sidebar_state="auto",
+)
+
+# Define CSS to change the background image
+background_css = """
+    body {
+        background-image: url('./bg.jpg');
+        background-size: cover;
+    }
+"""
+
+# Inject the CSS for background image
+st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
