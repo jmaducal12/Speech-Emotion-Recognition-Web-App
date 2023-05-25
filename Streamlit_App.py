@@ -1,3 +1,6 @@
+
+pip install streamlit tensorflow librosa numpy sounddevice
+
 import streamlit as st
 import tensorflow as tf
 import librosa
