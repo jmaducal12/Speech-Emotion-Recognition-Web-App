@@ -32,7 +32,7 @@ st.set_page_config(
 # Define CSS to change the background image
 background_css = """
     body {
-        background-image: url('speech_image.jpg');
+        background-image: url('bg.jpg');
         background-size: cover;
     }
 """
