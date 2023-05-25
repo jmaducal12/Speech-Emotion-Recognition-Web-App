@@ -11,7 +11,7 @@ import streamlit as st
 # Define CSS to change the background image
 background_css = """
     body {
-        background-image: url("./bg.jpg");
+        background-image: url("https://github.com/jmaducal12/Speech-Emotion-Recognition-Web-App/blob/main/bg.jpg");
         background-size: cover;
     }
 """
