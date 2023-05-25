@@ -35,13 +35,6 @@ st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
 
 # def main for creating streamlit app
 def main():
-    st.set_page_config(
-        page_title="Emotional Speech Recognition",
-        page_icon=":microphone:",
-        layout="wide",
-        initial_sidebar_state="auto",
-    )
-    
     st.title('Speech Emotion Recognition')
     st.write('Record your voice and check the predicted emotion!')
 
