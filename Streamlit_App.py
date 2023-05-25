@@ -19,9 +19,6 @@ background_css = """
 # Inject the CSS for background image
 st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
 
-# Inject the HTML for background image
-st.write(background_html, unsafe_allow_html=True)
-
 # Load the pre-trained model
 # model = tf.keras.models.load_model('path_to_your_model.h5')  # Replace with the actual path to your saved model
 
