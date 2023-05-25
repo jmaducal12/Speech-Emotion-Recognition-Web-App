@@ -8,15 +8,16 @@ import streamlit as st
 # import sounddevice as sd
 # from scipy.io.wavfile import write
 
-# Define HTML to change the background image
-background_html = """
-  <style>
+# Define CSS to change the background image
+background_css = """
     body {
         background-image: url("https://raw.githubusercontent.com/jmaducal12/Speech-Emotion-Recognition-Web-App/main/bg.jpg");
         background-size: cover;
     }
-  </style>
 """
+
+# Inject the CSS for background image
+st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
 
 # Inject the HTML for background image
 st.write(background_html, unsafe_allow_html=True)
