@@ -5,9 +5,6 @@ import numpy as np
 import sounddevice as sd
 from scipy.io.wavfile import write
 
-# Creating virtual environment to isolate the dependencies
-python -m venv env
-
 # Load the pre-trained model
 model = tf.keras.models.load_model('path_to_your_model.h5')  # Replace with the actual path to your saved model
 
