@@ -4,7 +4,7 @@
 import streamlit as st
 # import tensorflow as tf
 # import librosa
-#import numpy as np
+# import numpy as np
 # import sounddevice as sd
 # from scipy.io.wavfile import write
 
@@ -20,7 +20,26 @@ import streamlit as st
 #    mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
 #    mfccs_scaled = np.mean(mfccs.T, axis=0)
 #    return mfccs_scaled
-  
+
+# Set page configuration
+st.set_page_config(
+    page_title="Emotional Speech Recognition",
+    page_icon=":microphone:",
+    layout="wide",
+    initial_sidebar_state="auto",
+)
+
+# Define CSS to change the background image
+background_css = """
+    body {
+        background-image: url('speech_image.jpg');
+        background-size: cover;
+    }
+"""
+
+# Inject the CSS for background image
+st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
+
 # def main for creating streamlit app
 def main():
     st.title('Speech Emotion Recognition')
