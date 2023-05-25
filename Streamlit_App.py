@@ -8,6 +8,17 @@ import streamlit as st
 # import sounddevice as sd
 # from scipy.io.wavfile import write
 
+# Define CSS to change the background image
+background_css = """
+    body {
+        background-image: url("./bg.jpg");
+        background-size: cover;
+    }
+"""
+
+# Inject the CSS for background image
+st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
+
 # Load the pre-trained model
 # model = tf.keras.models.load_model('path_to_your_model.h5')  # Replace with the actual path to your saved model
 
@@ -24,6 +35,13 @@ import streamlit as st
 
 # def main for creating streamlit app
 def main():
+    st.set_page_config(
+        page_title="Emotional Speech Recognition",
+        page_icon=":microphone:",
+        layout="wide",
+        initial_sidebar_state="auto",
+    )
+    
     st.title('Speech Emotion Recognition')
     st.write('Record your voice and check the predicted emotion!')
 
@@ -56,24 +74,7 @@ def main():
             predicted_emotion = emotion_labels[np.argmax(predicted_probabilities)]
             st.success(f'Predicted Emotion: {predicted_emotion}')
             
-# Set page configuration
-st.set_page_config(
-    page_title="Emotional Speech Recognition",
-    page_icon=":microphone:",
-    layout="wide",
-    initial_sidebar_state="auto",
-)
 
-# Define CSS to change the background image
-background_css = """
-    body {
-        background-image: url('./bg.jpg');
-        background-size: cover;
-    }
-"""
-
-# Inject the CSS for background image
-st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
