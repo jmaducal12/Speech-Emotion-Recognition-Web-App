@@ -8,16 +8,18 @@ import streamlit as st
 # import sounddevice as sd
 # from scipy.io.wavfile import write
 
-# Define CSS to change the background image
-background_css = """
+# Define HTML to change the background image
+background_html = """
+  <style>
     body {
         background-image: url("https://raw.githubusercontent.com/jmaducal12/Speech-Emotion-Recognition-Web-App/main/bg.jpg");
         background-size: cover;
     }
+  </style>
 """
 
-# Inject the CSS for background image
-st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
+# Inject the HTML for background image
+st.write(background_html, unsafe_allow_html=True)
 
 # Load the pre-trained model
 # model = tf.keras.models.load_model('path_to_your_model.h5')  # Replace with the actual path to your saved model
