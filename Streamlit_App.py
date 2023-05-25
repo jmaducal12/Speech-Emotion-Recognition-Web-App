@@ -9,17 +9,17 @@ import streamlit as st
 # from scipy.io.wavfile import write
 
 # Load the pre-trained model
-model = tf.keras.models.load_model('path_to_your_model.h5')  # Replace with the actual path to your saved model
+# model = tf.keras.models.load_model('path_to_your_model.h5')  # Replace with the actual path to your saved model
 
 # Define emotion labels
-emotion_labels = ['angry' 'disgust' 'fear' 'happy' 'neutral' 'sad']
+# emotion_labels = ['angry' 'disgust' 'fear' 'happy' 'neutral' 'sad']
 
 # def function to extract audio from the recorded audio
-def extract_features(audio_path):
-    y, sr = librosa.load(audio_path, sr=None)
-    mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
-    mfccs_scaled = np.mean(mfccs.T, axis=0)
-    return mfccs_scaled
+# def extract_features(audio_path):
+#    y, sr = librosa.load(audio_path, sr=None)
+#    mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
+#    mfccs_scaled = np.mean(mfccs.T, axis=0)
+#    return mfccs_scaled
   
 # def main for creating streamlit app
 def main():
