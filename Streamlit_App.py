@@ -10,7 +10,7 @@ from scipy.io.wavfile import write
 model = tf.keras.models.load_model('ltsm_best_weights.hdf5')
 
 # Define emotion labels
-# emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
+emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
 
 # Function to extract audio features from the recorded audio
 def extract_features(audio_path):
