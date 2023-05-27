@@ -12,7 +12,7 @@ model = tf.keras.models.load_model('ltsm_best_weights.hdf5')
 # Define emotion labels
 # emotion_labels = ['angry' 'disgust' 'fear' 'happy' 'neutral' 'sad']
 
-def function to extract audio from the recorded audio
+#def function to extract audio from the recorded audio
 def extract_features(audio_path):
   y, sr = librosa.load(audio_path, sr=None)
   mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
