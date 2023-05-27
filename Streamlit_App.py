@@ -1,36 +1,23 @@
 
-# pip install streamlit tensorflow librosa numpy sounddevice
-
 import streamlit as st
-# import tensorflow as tf
-# import librosa
-# import numpy as np
-# import sounddevice as sd
-# from scipy.io.wavfile import write
-
-# Define CSS to change the background image
-background_css = """
-    body {
-        background-image: url("https://raw.githubusercontent.com/jmaducal12/Speech-Emotion-Recognition-Web-App/main/bg.jpg");
-        background-size: cover;
-    }
-"""
-
-# Inject the CSS for background image
-st.markdown(f'<style>{background_css}</style>', unsafe_allow_html=True)
+import tensorflow as tf
+import librosa
+import numpy as np
+import sounddevice as sd
+from scipy.io.wavfile import write
 
 # Load the pre-trained model
-# model = tf.keras.models.load_model('path_to_your_model.h5')  # Replace with the actual path to your saved model
+model = tf.keras.models.load_model('ltsm_best_weights.hdf5') 
 
 # Define emotion labels
 # emotion_labels = ['angry' 'disgust' 'fear' 'happy' 'neutral' 'sad']
 
-# def function to extract audio from the recorded audio
-# def extract_features(audio_path):
-#    y, sr = librosa.load(audio_path, sr=None)
-#    mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
-#    mfccs_scaled = np.mean(mfccs.T, axis=0)
-#    return mfccs_scaled
+def function to extract audio from the recorded audio
+def extract_features(audio_path):
+  y, sr = librosa.load(audio_path, sr=None)
+  mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
+  mfccs_scaled = np.mean(mfccs.T, axis=0)
+return mfccs_scaled
 
 
 # def main for creating streamlit app
@@ -67,8 +54,6 @@ def main():
             predicted_emotion = emotion_labels[np.argmax(predicted_probabilities)]
             st.success(f'Predicted Emotion: {predicted_emotion}')
             
-
-
 if __name__ == '__main__':
     main()
     
