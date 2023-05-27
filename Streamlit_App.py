@@ -2,6 +2,7 @@ import streamlit as st
 import tensorflow as tf
 import librosa
 import numpy as np
+import sounddevice as sd
 import soundfile as sf
 from scipy.io.wavfile import write
 
@@ -9,7 +10,7 @@ from scipy.io.wavfile import write
 model = tf.keras.models.load_model('ltsm_best_weights.hdf5')
 
 # Define emotion labels
-emotion_labels = ['angry' 'disgust' 'fear' 'happy' 'neutral' 'sad']
+# emotion_labels = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad']
 
 # Function to extract audio features from the recorded audio
 def extract_features(audio_path):
@@ -33,16 +34,20 @@ def main():
 
     if st.button('Stop Recording'):
         recording = False
-        sf.write(audio_path, np.concatenate(audio_frames), 44100)
+        sd.stop()
 
     if recording:
-        audio = st.record(key="audio", duration=5)
+        audio = sd.rec(int(5 * 44100), samplerate=44100, channels=1)
         audio_frames.append(audio)
+
+    if len(audio_frames) > 0:
+        st.audio(np.concatenate(audio_frames), format='audio/wav')
 
     if st.button('Recognize Emotion'):
         if len(audio_frames) == 0:
             st.warning('No recorded audio found. Please record your voice first.')
         else:
+            write(audio_path, np.concatenate(audio_frames), 44100)
             features = extract_features(audio_path)
             features = np.expand_dims(features, axis=0)
             predicted_probabilities = model.predict(features)[0]
