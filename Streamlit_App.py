@@ -17,7 +17,7 @@ def extract_features(audio_path):
   y, sr = librosa.load(audio_path, sr=None)
   mfccs = librosa.feature.mfcc(y, sr=sr, n_mfcc=40)
   mfccs_scaled = np.mean(mfccs.T, axis=0)
-return mfccs_scaled
+  return mfccs_scaled
 
 
 # def main for creating streamlit app
