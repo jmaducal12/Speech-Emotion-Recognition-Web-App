@@ -3,7 +3,7 @@ import streamlit as st
 import tensorflow as tf
 import librosa
 import numpy as np
-import sounddevice as sd
+import soundfile as sf
 from scipy.io.wavfile import write
 
 # Load the pre-trained model
