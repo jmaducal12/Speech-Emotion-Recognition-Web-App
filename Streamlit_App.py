@@ -72,9 +72,9 @@ if model is None:
 
 st.success("✅ Model loaded successfully!")
 
-# Try to import audio recorder
+# Try to import mic recorder
 try:
-    from streamlit_audio_recorder import audio_recorder
+    from streamlit_mic_recorder import mic_recorder
     
     # Audio recording section
     st.subheader("🎙️ Record Audio")
@@ -82,23 +82,25 @@ try:
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("Click the microphone button to start/stop recording")
+        st.markdown("Click the button to start/stop recording")
         
     with col2:
         st.markdown("Speak clearly for 3-5 seconds")
     
     # Audio recorder
-    audio_bytes = audio_recorder(
-        text="",
-        recording_color="#ff4b4b",
-        neutral_color="#6c757d",
-        icon_name="microphone",
-        icon_size="2x",
-        pause_threshold=3.0,
-        key="recorder"
+    audio = mic_recorder(
+        start_prompt="⏺️ Start Recording",
+        stop_prompt="⏹️ Stop Recording",
+        just_once=False,
+        use_container_width=True,
+        key='recorder'
     )
     
-    if audio_bytes:
+    if audio:
+        # The audio is returned as a tuple (bytes, sample_rate)
+        audio_bytes = audio['bytes']
+        sample_rate = audio['sample_rate']
+        
         # Display audio player
         st.audio(audio_bytes, format="audio/wav")
         
@@ -152,9 +154,9 @@ try:
     # Instructions
     with st.expander("📋 Instructions"):
         st.markdown("""
-        1. Click the **microphone button** to start recording
+        1. Click **'Start Recording'** to begin recording
         2. Speak clearly for **3-5 seconds**
-        3. Click the button again to **stop recording**
+        3. Click **'Stop Recording'** when done
         4. Click **'Recognize Emotion'** to analyze your speech
         5. View the predicted emotion and confidence score
         
@@ -176,26 +178,20 @@ try:
         - 😲 Surprise
         """)
 
-except ImportError:
-    st.error("""
-    ⚠️ Audio recorder component not installed. 
-    
-    Please make sure you have `streamlit-audio-recorder` in your requirements.txt file.
+except ImportError as e:
+    st.error(f"Error importing mic_recorder: {str(e)}")
+    st.info("""
+    ⚠️ Please install streamlit-mic-recorder:
     
     Add this to your requirements.txt:
     ```
-    streamlit-audio-recorder==1.0.0
+    streamlit-mic-recorder==1.0.0
     ```
     """)
-    
-    # Show current requirements for debugging
-    st.code("""
-    # Your requirements.txt should contain:
-    streamlit==1.28.0
-    tensorflow==2.13.0
-    librosa==0.10.0
-    numpy==1.24.3
-    scipy==1.11.3
-    soundfile==0.12.1
-    streamlit-audio-recorder==1.0.0
-    """)
+
+# Add debug info in an expander
+with st.expander("🔧 Debug Info"):
+    st.write("Python version:", os.sys.version)
+    st.write("TensorFlow version:", tf.__version__)
+    st.write("Librosa version:", librosa.__version__)
+    st.write("NumPy version:", np.__version__)
