@@ -1,7 +1,7 @@
-streamlit
-tensorflow
-librosa
-numpy
-soundfile
-scipy
-sounddevice
+streamlit==1.28.0
+tensorflow==2.13.0
+librosa==0.10.0
+numpy==1.24.3
+scipy==1.11.3
+soundfile==0.12.1
+streamlit-audio-recorder==1.0.0  # Browser-based audio recorder
