@@ -9,7 +9,7 @@ import os
 warnings.filterwarnings("ignore")
 
 # ---------------------------------------------------
-# Page Config
+# PAGE CONFIG
 # ---------------------------------------------------
 st.set_page_config(
     page_title="Speech Emotion Recognition",
@@ -22,7 +22,7 @@ st.markdown("---")
 
 
 # ---------------------------------------------------
-# Load Model (Safe Version)
+# LOAD MODEL
 # ---------------------------------------------------
 @st.cache_resource
 def load_model():
@@ -37,7 +37,8 @@ def load_model():
         return None
 
 
-model = load_model()
+with st.spinner("Loading model..."):
+    model = load_model()
 
 if model is None:
     st.stop()
@@ -46,7 +47,7 @@ st.success("✅ Model loaded successfully!")
 
 
 # ---------------------------------------------------
-# Emotion Labels
+# EMOTION LABELS
 # ---------------------------------------------------
 emotion_labels = [
     "angry",
@@ -60,7 +61,7 @@ emotion_labels = [
 
 
 # ---------------------------------------------------
-# Feature Extraction
+# FEATURE EXTRACTION
 # ---------------------------------------------------
 def extract_features(audio_path):
     try:
@@ -77,12 +78,12 @@ def extract_features(audio_path):
         return mfccs_scaled
 
     except Exception as e:
-        st.error(f"Feature extraction error: {e}")
+        st.error(f"❌ Feature extraction error: {e}")
         return None
 
 
 # ---------------------------------------------------
-# Mic Recorder
+# MICROPHONE RECORDER
 # ---------------------------------------------------
 try:
     from streamlit_mic_recorder import mic_recorder
@@ -101,8 +102,10 @@ try:
 
         audio_bytes = audio["bytes"]
 
+        # Play recorded audio
         st.audio(audio_bytes, format="audio/wav")
 
+        # Save to temp file (DO NOT DELETE manually)
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
             tmp.write(audio_bytes)
             tmp_path = tmp.name
@@ -115,9 +118,11 @@ try:
 
                 if features is not None:
 
+                    # Prepare input shape
                     features = np.expand_dims(features, axis=0)
                     features = np.expand_dims(features, axis=-1)
 
+                    # Predict
                     prediction = model.predict(features, verbose=0)[0]
 
                     predicted_idx = np.argmax(prediction)
@@ -143,17 +148,28 @@ try:
                             text=f"{emotion}: {prob*100:.1f}%"
                         )
 
-        os.unlink(tmp_path)
-
 except ImportError:
     st.error("⚠️ streamlit-mic-recorder not installed properly.")
 
 
 # ---------------------------------------------------
-# Debug Section
+# INSTRUCTIONS
+# ---------------------------------------------------
+with st.expander("📋 Instructions"):
+    st.markdown("""
+    1. Click **Start Recording**
+    2. Speak clearly for 3–5 seconds
+    3. Click **Stop Recording**
+    4. Click **Recognize Emotion**
+    5. View results and confidence score
+    """)
+
+
+# ---------------------------------------------------
+# DEBUG SECTION
 # ---------------------------------------------------
 with st.expander("🔧 Debug Info"):
-    st.write("Python:", os.sys.version)
-    st.write("TensorFlow:", tf.__version__)
-    st.write("Librosa:", librosa.__version__)
-    st.write("NumPy:", np.__version__)
+    st.write("Python version:", os.sys.version)
+    st.write("TensorFlow version:", tf.__version__)
+    st.write("Librosa version:", librosa.__version__)
+    st.write("NumPy version:", np.__version__)
