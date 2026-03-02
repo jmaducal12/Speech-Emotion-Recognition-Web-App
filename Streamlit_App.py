@@ -63,10 +63,22 @@ emotion_labels = [
 # ---------------------------------------------------
 # FEATURE EXTRACTION
 # ---------------------------------------------------
-def extract_features(audio_path):
+def extract_features(audio_bytes):
     try:
-        y, sr = librosa.load(audio_path, sr=22050)
+        # Save bytes to temp wav file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+            tmp.write(audio_bytes)
+            tmp.flush()
+            tmp_path = tmp.name
 
+        # Load audio safely
+        y, sr = librosa.load(tmp_path, sr=22050, mono=True)
+
+        if y is None or len(y) == 0:
+            st.error("Audio data could not be processed.")
+            return None
+
+        # Extract MFCC
         mfccs = librosa.feature.mfcc(
             y=y,
             sr=sr,
@@ -78,47 +90,36 @@ def extract_features(audio_path):
         return mfccs_scaled
 
     except Exception as e:
-        st.error(f"❌ Feature extraction error: {e}")
+        st.error(f"❌ Feature extraction error: {str(e)}")
         return None
 
 
 # ---------------------------------------------------
-# MICROPHONE RECORDER
+# AUDIO INPUT (BUILT-IN STREAMLIT)
 # ---------------------------------------------------
-try:
-    from streamlit_mic_recorder import mic_recorder
+st.subheader("🎙️ Record Audio")
 
-    st.subheader("🎙️ Record Audio")
+audio_file = st.audio_input("Click to record and speak for 3–5 seconds")
 
-    audio = mic_recorder(
-        start_prompt="⏺️ Start Recording",
-        stop_prompt="⏹️ Stop Recording",
-        just_once=False,
-        use_container_width=True,
-        key="recorder"
-    )
+if audio_file is not None:
 
-    if audio:
+    st.audio(audio_file)
 
-        audio_bytes = audio["bytes"]
+    if st.button("🔍 Recognize Emotion", type="primary"):
 
-        # Play recorded audio
-        st.audio(audio_bytes, format="audio/wav")
+        with st.spinner("Analyzing emotion..."):
 
-        # Save to temp file (DO NOT DELETE manually)
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-            tmp.write(audio_bytes)
-            tmp_path = tmp.name
+            audio_bytes = audio_file.read()
 
-        if st.button("🔍 Recognize Emotion", type="primary"):
+            if audio_bytes is None or len(audio_bytes) == 0:
+                st.error("No audio detected. Please try again.")
+            else:
 
-            with st.spinner("Analyzing emotion..."):
-
-                features = extract_features(tmp_path)
+                features = extract_features(audio_bytes)
 
                 if features is not None:
 
-                    # Prepare input shape
+                    # Prepare input
                     features = np.expand_dims(features, axis=0)
                     features = np.expand_dims(features, axis=-1)
 
@@ -148,25 +149,22 @@ try:
                             text=f"{emotion}: {prob*100:.1f}%"
                         )
 
-except ImportError:
-    st.error("⚠️ streamlit-mic-recorder not installed properly.")
-
 
 # ---------------------------------------------------
 # INSTRUCTIONS
 # ---------------------------------------------------
 with st.expander("📋 Instructions"):
     st.markdown("""
-    1. Click **Start Recording**
+    1. Click the recorder
     2. Speak clearly for 3–5 seconds
-    3. Click **Stop Recording**
+    3. Stop recording
     4. Click **Recognize Emotion**
-    5. View results and confidence score
+    5. View prediction results
     """)
 
 
 # ---------------------------------------------------
-# DEBUG SECTION
+# DEBUG INFO
 # ---------------------------------------------------
 with st.expander("🔧 Debug Info"):
     st.write("Python version:", os.sys.version)
